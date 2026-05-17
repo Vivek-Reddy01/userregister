@@ -1,0 +1,732 @@
+
+User_registration
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartTasks Portal</title>
+ 
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+ 
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ 
+  <div class="container">
+ 
+    <!-- Dark Mode Toggle -->
+    <button id="themeToggle" class="theme-btn">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+ 
+    <div class="form-card">
+ 
+      <div class="logo-area">
+        <div class="logo-circle">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h1>SmartTasks Portal</h1>
+        <p>Create your account and manage tasks smarter.</p>
+      </div>
+ 
+      <form id="registerForm">
+ 
+        <!-- Full Name -->
+        <div class="input-group">
+          <label>Full Name</label>
+          <div class="input-box">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="fullName" placeholder="Enter full name" />
+          </div>
+          <small class="error" id="nameError"></small>
+        </div>
+ 
+        <!-- Email -->
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-box">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="email" placeholder="Enter email address" />
+          </div>
+          <small class="error" id="emailError"></small>
+        </div>
+ 
+        <!-- Mobile -->
+        <div class="input-group">
+          <label>Mobile Number</label>
+          <div class="input-box">
+            <i class="fa-solid fa-phone"></i>
+            <input type="text" id="mobile" maxlength="10" placeholder="Enter mobile number" />
+          </div>
+          <small class="error" id="mobileError"></small>
+        </div>
+ 
+        <!-- Password -->
+        <div class="input-group">
+          <label>Password</label>
+          <div class="input-box">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Create password" />
+            <span class="toggle-password" id="togglePassword">
+              <i class="fa-solid fa-eye"></i>
+            </span>
+          </div>
+ 
+          <div class="strength-container">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+ 
+          <span class="strength-text" id="strengthText">Password Strength</span>
+          <small class="error" id="passwordError"></small>
+        </div>
+ 
+        <!-- Confirm Password -->
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <div class="input-box">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" />
+          </div>
+          <small class="error" id="confirmError"></small>
+        </div>
+ 
+        <!-- Gender -->
+        <div class="input-group">
+          <label>Gender</label>
+          <div class="gender-box">
+            <label>
+              <input type="radio" name="gender" value="Male" /> Male
+            </label>
+ 
+            <label>
+              <input type="radio" name="gender" value="Female" /> Female
+            </label>
+ 
+            <label>
+              <input type="radio" name="gender" value="Other" /> Other
+            </label>
+          </div>
+          <small class="error" id="genderError"></small>
+        </div>
+ 
+        <!-- DOB -->
+        <div class="input-group">
+          <label>Date of Birth</label>
+          <div class="input-box">
+            <i class="fa-solid fa-calendar"></i>
+            <input type="date" id="dob" />
+          </div>
+          <small class="error" id="dobError"></small>
+        </div>
+ 
+        <!-- City -->
+        <div class="input-group">
+          <label>City</label>
+          <div class="input-box">
+            <i class="fa-solid fa-location-dot"></i>
+            <select id="city">
+              <option value="">Select City</option>
+              <option>Hyderabad</option>
+              <option>Bangalore</option>
+              <option>Chennai</option>
+              <option>Mumbai</option>
+              <option>Delhi</option>
+            </select>
+          </div>
+          <small class="error" id="cityError"></small>
+        </div>
+ 
+        <!-- Terms -->
+        <div class="terms-box">
+          <input type="checkbox" id="terms" />
+          <label for="terms">
+            I agree to the Terms & Conditions
+          </label>
+        </div>
+        <small class="error" id="termsError"></small>
+ 
+        <!-- Register Button -->
+        <button type="submit" id="registerBtn" disabled>
+          Register Now
+        </button>
+ 
+        <!-- Loader -->
+        <div class="loader" id="loader"></div>
+ 
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+          Registration Successful 🎉
+        </div>
+ 
+      </form>
+    </div>
+  </div>
+ 
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+====================================
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+ 
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  padding: 20px;
+  transition: 0.4s;
+}
+ 
+.container {
+  width: 100%;
+  max-width: 470px;
+  position: relative;
+}
+ 
+.form-card {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 35px 28px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+  color: white;
+  animation: fadeIn 0.7s ease;
+}
+ 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+ 
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+ 
+.logo-area {
+  text-align: center;
+  margin-bottom: 28px;
+}
+ 
+.logo-circle {
+  width: 75px;
+  height: 75px;
+  margin: auto;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+ 
+.logo-area h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+ 
+.logo-area p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+ 
+.input-group {
+  margin-bottom: 18px;
+}
+ 
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+ 
+.input-box {
+  position: relative;
+}
+ 
+.input-box i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b21a8;
+}
+ 
+.input-box input,
+.input-box select {
+  width: 100%;
+  padding: 14px 45px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+ 
+.input-box input:focus,
+.input-box select:focus {
+  border-color: #9333ea;
+  box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
+}
+ 
+.valid {
+  border-color: #22c55e !important;
+}
+ 
+.invalid {
+  border-color: #ef4444 !important;
+}
+ 
+.error {
+  color: #ffd4d4;
+  font-size: 13px;
+  margin-top: 6px;
+  display: block;
+}
+ 
+.gender-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+ 
+.gender-box label {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+ 
+.terms-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+ 
+button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+ 
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+ 
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+ 
+.strength-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+ 
+.strength-bar {
+  height: 100%;
+  width: 0;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+ 
+.strength-text {
+  font-size: 13px;
+  margin-top: 6px;
+  display: inline-block;
+}
+ 
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6b21a8;
+}
+ 
+.loader {
+  width: 45px;
+  height: 45px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+  display: none;
+}
+ 
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+ 
+.success-message {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #dcfce7;
+  display: none;
+}
+ 
+.theme-btn {
+  position: absolute;
+  top: -15px;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 18px;
+  z-index: 2;
+}
+ 
+.dark-mode {
+  background: linear-gradient(135deg, #111827, #1e293b);
+}
+ 
+.dark-mode .form-card {
+  background: rgba(17, 24, 39, 0.8);
+}
+ 
+@media (max-width: 600px) {
+  .form-card {
+    padding: 25px 18px;
+  }
+ 
+  .logo-area h1 {
+    font-size: 23px;
+  }
+}
+
+
+===================================
+
+const form = document.getElementById("registerForm");
+const registerBtn = document.getElementById("registerBtn");
+ 
+const fullName = document.getElementById("fullName");
+const email = document.getElementById("email");
+const mobile = document.getElementById("mobile");
+const password = document.getElementById("password");
+const confirmPassword = document.getElementById("confirmPassword");
+const dob = document.getElementById("dob");
+const city = document.getElementById("city");
+const terms = document.getElementById("terms");
+ 
+const loader = document.getElementById("loader");
+const successMessage = document.getElementById("successMessage");
+ 
+const strengthBar = document.getElementById("strengthBar");
+const strengthText = document.getElementById("strengthText");
+ 
+const togglePassword = document.getElementById("togglePassword");
+const themeToggle = document.getElementById("themeToggle");
+ 
+// Regex Patterns
+const namePattern = /^[A-Za-z ]+$/;
+const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+const mobilePattern = /^[0-9]{10}$/;
+const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+ 
+// Error Functions
+function setError(id, message) {
+  document.getElementById(id).innerText = message;
+}
+ 
+function setValid(input) {
+  input.classList.add("valid");
+  input.classList.remove("invalid");
+}
+ 
+function setInvalid(input) {
+  input.classList.add("invalid");
+  input.classList.remove("valid");
+}
+ 
+// Name Validation
+function validateName() {
+  if (!namePattern.test(fullName.value.trim())) {
+    setError("nameError", "Enter a valid name");
+    setInvalid(fullName);
+    return false;
+  }
+ 
+  setError("nameError", "");
+  setValid(fullName);
+  return true;
+}
+ 
+// Email Validation
+function validateEmail() {
+  if (!emailPattern.test(email.value.trim())) {
+    setError("emailError", "Enter a valid email address");
+    setInvalid(email);
+    return false;
+  }
+ 
+  setError("emailError", "");
+  setValid(email);
+  return true;
+}
+ 
+// Mobile Validation
+function validateMobile() {
+  if (!mobilePattern.test(mobile.value.trim())) {
+    setError("mobileError", "Enter a 10-digit mobile number");
+    setInvalid(mobile);
+    return false;
+  }
+ 
+  setError("mobileError", "");
+  setValid(mobile);
+  return true;
+}
+ 
+// Password Validation
+function validatePassword() {
+  const value = password.value;
+ 
+  if (value.length < 8) {
+    strengthBar.style.width = "25%";
+    strengthBar.style.background = "red";
+    strengthText.innerText = "Weak Password";
+ 
+    setError("passwordError", "Weak password");
+    setInvalid(password);
+    return false;
+  }
+ 
+  if (passwordPattern.test(value)) {
+    strengthBar.style.width = "100%";
+    strengthBar.style.background = "limegreen";
+    strengthText.innerText = "Strong Password";
+ 
+    setError("passwordError", "");
+    setValid(password);
+    return true;
+  }
+ 
+  strengthBar.style.width = "60%";
+  strengthBar.style.background = "orange";
+  strengthText.innerText = "Medium Password";
+ 
+  setError(
+    "passwordError",
+    "Password needs uppercase, number & special character"
+  );
+ 
+  setInvalid(password);
+  return false;
+}
+ 
+// Confirm Password
+function validateConfirmPassword() {
+  if (confirmPassword.value !== password.value || confirmPassword.value === "") {
+    setError("confirmError", "Passwords do not match");
+    setInvalid(confirmPassword);
+    return false;
+  }
+ 
+  setError("confirmError", "");
+  setValid(confirmPassword);
+  return true;
+}
+ 
+// Gender Validation
+function validateGender() {
+  const gender = document.querySelector("input[name='gender']:checked");
+ 
+  if (!gender) {
+    setError("genderError", "Select your gender");
+    return false;
+  }
+ 
+  setError("genderError", "");
+  return true;
+}
+ 
+// DOB Validation
+function validateDOB() {
+  const birthDate = new Date(dob.value);
+  const today = new Date();
+ 
+  let age = today.getFullYear() - birthDate.getFullYear();
+ 
+  if (!dob.value || age < 18) {
+    setError("dobError", "You must be 18+");
+    setInvalid(dob);
+    return false;
+  }
+ 
+  setError("dobError", "");
+  setValid(dob);
+  return true;
+}
+ 
+// City Validation
+function validateCity() {
+  if (city.value === "") {
+    setError("cityError", "Select your city");
+    setInvalid(city);
+    return false;
+  }
+ 
+  setError("cityError", "");
+  setValid(city);
+  return true;
+}
+ 
+// Terms Validation
+function validateTerms() {
+  if (!terms.checked) {
+    setError("termsError", "Accept terms to continue");
+    return false;
+  }
+ 
+  setError("termsError", "");
+  return true;
+}
+ 
+// Enable Button Dynamically
+function checkFormValidity() {
+  const valid =
+    validateName() &&
+    validateEmail() &&
+    validateMobile() &&
+    validatePassword() &&
+    validateConfirmPassword() &&
+    validateGender() &&
+    validateDOB() &&
+    validateCity() &&
+    validateTerms();
+ 
+  registerBtn.disabled = !valid;
+}
+ 
+// Event Listeners
+fullName.addEventListener("blur", validateName);
+email.addEventListener("blur", validateEmail);
+mobile.addEventListener("blur", validateMobile);
+password.addEventListener("input", validatePassword);
+confirmPassword.addEventListener("input", validateConfirmPassword);
+dob.addEventListener("change", validateDOB);
+city.addEventListener("change", validateCity);
+terms.addEventListener("change", validateTerms);
+ 
+// Auto Check Validity
+form.addEventListener("input", checkFormValidity);
+form.addEventListener("change", checkFormValidity);
+ 
+// Show/Hide Password
+togglePassword.addEventListener("click", () => {
+  if (password.type === "password") {
+    password.type = "text";
+    togglePassword.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+  } else {
+    password.type = "password";
+    togglePassword.innerHTML = '<i class="fa-solid fa-eye"></i>';
+  }
+});
+ 
+// Dark Mode Toggle
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+});
+ 
+// Auto Focus Next Field
+fullName.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && validateName()) {
+    email.focus();
+  }
+});
+
+ 
+// Form Submit
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+ 
+  const isValid =
+    validateName() &&
+    validateEmail() &&
+    validateMobile() &&
+    validatePassword() &&
+    validateConfirmPassword() &&
+    validateGender() &&
+    validateDOB() &&
+    validateCity() &&
+    validateTerms();
+    
+ 
+  if (!isValid) {
+    return;
+  }
+ 
+  loader.style.display = "block";
+  registerBtn.disabled = true;
+ 
+  const userData = {
+    fullName: fullName.value,
+    email: email.value,
+    mobile: mobile.value,
+    gender: document.querySelector("input[name='gender']:checked").value,
+    dob: dob.value,
+    city: city.value
+  };
+ 
+  localStorage.setItem("smartTasksUser", JSON.stringify(userData));
+ 
+  setTimeout(() => {
+    loader.style.display = "none";
+    successMessage.style.display = "block";
+ 
+    form.reset();
+ 
+    strengthBar.style.width = "0";
+    strengthText.innerText = "Password Strength";
+ 
+    document
+      .querySelectorAll("input, select")
+      .forEach((field) => {
+        field.classList.remove("valid");
+      });
+ 
+    registerBtn.disabled = true;
+ 
+  }, 2000);
+});
